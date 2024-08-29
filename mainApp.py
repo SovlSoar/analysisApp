@@ -1,6 +1,11 @@
 import streamlit as st
 import boto3
 import time
+import os
+
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+aws_region = os.getenv('AWS_REGION')
 
 if 'uploaded' not in st.session_state:
     st.session_state.uploaded = False
@@ -32,7 +37,12 @@ if analysisType is "Image":
 
     def detectface():
 
-        client = boto3.client('rekognition')
+        client = boto3.client(
+            'rekognition',
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            region_name=aws_region
+        )
 
         response = client.detect_faces(
             Image={
@@ -46,7 +56,12 @@ if analysisType is "Image":
 
 
     def detectlabel(minValue, maxLabel):
-        client = boto3.client('rekognition')
+        client = boto3.client(
+            'rekognition',
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            region_name=aws_region
+        )
 
         response = client.detect_labels(
             Image={
@@ -107,7 +122,12 @@ if analysisType is "Video":
     # add progress bar when loading to s3
 
     def StartLabelDetection(dn, bucket, minValue):
-        client = boto3.client('rekognition')
+        client = boto3.client(
+            'rekognition',
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            region_name=aws_region
+        )
         response = client.start_label_detection(
             Video={
                 'S3Object': {
@@ -124,7 +144,12 @@ if analysisType is "Video":
 
 
     def GetLabelDetection(id, maxresult):
-        client = boto3.client('rekognition')
+        client = boto3.client(
+            'rekognition',
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            region_name=aws_region
+        )
 
         response = client.get_label_detection(
             JobId=id,
@@ -143,7 +168,12 @@ if analysisType is "Video":
 
 
     def StartFaceDetection(dn, bucket):
-        client = boto3.client('rekognition')
+        client = boto3.client(
+            'rekognition',
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            region_name=aws_region
+        )
         response = client.start_face_detection(
             Video={
                 'S3Object': {
@@ -157,7 +187,12 @@ if analysisType is "Video":
 
 
     def GetFaceDetection(id, maxresults):
-        client = boto3.client('rekognition')
+        client = boto3.client(
+            'rekognition',
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            region_name=aws_region
+        )
 
         response = client.get_face_detection(
             JobId=id,
